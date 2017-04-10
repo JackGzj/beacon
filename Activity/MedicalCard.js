@@ -39,7 +39,7 @@ export default class MedicalCard extends React.Component {
         this.setState({refreshing: true});
         NetUtil.getMedicalCard((data) => {
             if (data.success == true) {
-                this.setState({dataSource: data.data, refreshing: true, error: false});
+                this.setState({dataSource: data.data, refreshing: false, error: false});
             }
             else {
                 this.setState({error: true});
@@ -62,9 +62,17 @@ export default class MedicalCard extends React.Component {
         // console.log('rowData:' + JSON.stringify(rowData) + ',' + sectionID + ',' + rowID);
         return (
             <View style={styles.rowContainer}>
-                <View style={styles.rowLeft}>
-                    <Image source={require('../images/card.png')} style={styles.recordIcon}/>
-                    <Text style={styles.rowText}>{rowData.pathcardid}</Text>
+                <View style={styles.rowTop}>
+                    <View style={styles.rowLeft}>
+                        <Image source={require('../images/card.png')} style={styles.cardIcon}/>
+                        <Text style={styles.rowText}>{rowData.pathcardid}</Text>
+                    </View>
+                </View>
+                <View style={styles.rowBottom}>
+                    <View style={styles.rowLeft}>
+                        <Image source={require('../images/hospital.png')} style={styles.hospitalIcon}/>
+                        <Text style={styles.rowText}>{rowData.hosname}</Text>
+                    </View>
                 </View>
             </View>
         );
@@ -183,10 +191,20 @@ var styles = StyleSheet.create({
         paddingRight: 35,
     },
     rowContainer: {
-        height: 75,
-        flexDirection: 'row',
+        height: 94,
         borderBottomWidth: 1,
         borderColor: '#E6E6E6',
+    },
+    rowTop: {
+        flex: 1,
+        flexDirection: 'row',
+        marginTop: 20,
+    },
+    rowBottom: {
+        flex: 1,
+        marginTop: 12,
+        flexDirection: 'row',
+        marginBottom: 20,
     },
     rowLeft: {
         flex: 2,
@@ -204,10 +222,16 @@ var styles = StyleSheet.create({
         fontSize: 18,
         color: '#222222',
     },
-    recordIcon: {
+    cardIcon: {
         marginLeft: 5,
         width: 24,
         height: 18,
         resizeMode: 'stretch',
-    }
+    },
+    hospitalIcon: {
+        marginLeft: 5,
+        width: 20,
+        height: 24,
+        resizeMode: 'stretch',
+    },
 })

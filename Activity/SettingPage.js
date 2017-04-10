@@ -83,17 +83,15 @@ export default class ConfigPage extends React.Component {
                                 </View>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity>
-                            <View style={styles.rowContainer}>
-                                <View style={styles.rowLeft}>
-                                    <Text style={styles.rowText}>是否接受短信推送</Text>
-                                </View>
-                                <View style={styles.rowRight}>
-                                    <Switch onValueChange={this._switchChange.bind(this)} onTintColor={'#93C1FF'}
-                                            style={styles.switch} value={this.state.switchIsOn}></Switch>
-                                </View>
+                        <View style={styles.rowContainer}>
+                            <View style={styles.rowLeft}>
+                                <Text style={styles.rowText}>是否接受短信推送</Text>
                             </View>
-                        </TouchableOpacity>
+                            <View style={styles.rowRight}>
+                                <Switch onValueChange={this._switchChange.bind(this)} onTintColor={'#93C1FF'}
+                                        style={styles.switch} value={this.state.switchIsOn}></Switch>
+                            </View>
+                        </View>
                         <TouchableOpacity>
                             <View style={styles.rowContainer}>
                                 <View style={styles.rowLeft}>

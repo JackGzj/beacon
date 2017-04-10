@@ -61,6 +61,8 @@ export default class UserComponent extends React.Component {
                 <View style={styles.topContainer}>
                     <View style={styles.topLeft}></View>
                     <View style={styles.topMiddle}>
+                        <Image source={require('../images/center.png')} style={styles.centerIcon}/>
+                        <Text style={styles.userName}>Jennie</Text>
                     </View>
                     <View style={styles.topRigth}>
                         <TouchableOpacity onPress={this._jumpToSetting.bind(this)}>
@@ -114,11 +116,23 @@ var styles = StyleSheet.create ({
     },
     topMiddle: {
         flex: 2,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     topRigth: {
         flex: 1,
         alignItems: 'flex-end',
         justifyContent: 'flex-start',
+    },
+    centerIcon: {
+        height: 65,
+        width: 63,
+		resizeMode: 'stretch',
+    },
+    userName: {
+        fontSize: 30,
+        color: '#FFFFFF',
+        marginTop: 18,
     },
     settingIcon: {
         marginRight: 25,

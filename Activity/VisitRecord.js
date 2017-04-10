@@ -39,7 +39,7 @@ export default class visitRecord extends React.Component {
         this.setState({refreshing: true});
         NetUtil.getVisitRecord((data) => {
             if (data.success == true) {
-                this.setState({dataSource: data.data, refreshing: true, error: false});
+                this.setState({dataSource: data.data, refreshing: false, error: false});
             }
         });
     }
@@ -52,20 +52,27 @@ export default class visitRecord extends React.Component {
         });
     }
 
-
-
     _renderRow(rowData, sectionID, rowID) {
         // console.log('rowData:' + JSON.stringify(rowData) + ',' + sectionID + ',' + rowID);
         return (
-            <View style={styles.rowContainer}>
-                <View style={styles.rowLeft}>
-                    <Image source={require('../images/record.png')} style={styles.recordIcon}/>
-                    <Text style={styles.rowText}>{rowData.year}年{rowData.month}月{rowData.day}日</Text>
+            <TouchableOpacity>
+                <View style={styles.rowContainer}>
+                    <View style={styles.rowLeft}>
+                        <View style={styles.rowTop}>
+                            <Image source={require('../images/record.png')} style={styles.recordIcon}/>
+                            <Text style={styles.rowText}>{rowData.year}年{rowData.month}月{rowData.day}日</Text>
+                        </View>
+
+                        <View style={styles.rowBottom}>
+                            <Image source={require('../images/hospital.png')} style={styles.hospitalIcon}/>
+                            <Text style={styles.rowText}>{rowData.hosname}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.rowRight}>
+                        <Image source={require('../images/next.png')} style={styles.rowIcon} />
+                    </View>
                 </View>
-                <View style={styles.rowRight}>
-                    <Image source={require('../images/next.png')} style={styles.rowIcon} />
-                </View>
-            </View>
+            </TouchableOpacity>
         );
     }
 
@@ -181,16 +188,22 @@ var styles = StyleSheet.create({
         paddingRight: 35,
     },
     rowContainer: {
-        height: 75,
+        height: 85,
         flexDirection: 'row',
         borderBottomWidth: 1,
         borderColor: '#E6E6E6',
     },
+    rowTop: {
+        flexDirection: 'row',
+        marginTop: 15,
+    },
+    rowBottom: {
+        marginTop: 10,
+        flexDirection: 'row',
+        marginBottom: 18,
+    },
     rowLeft: {
         flex: 2,
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
     },
     rowRight: {
         flex: 1,
@@ -211,5 +224,11 @@ var styles = StyleSheet.create({
         width: 18,
         height: 24,
         resizeMode: 'stretch',
-    }
+    },
+    hospitalIcon: {
+        marginLeft: 5,
+        width: 20,
+        height: 24,
+        resizeMode: 'stretch',
+    },
 })

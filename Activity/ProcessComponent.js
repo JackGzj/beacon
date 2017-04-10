@@ -46,8 +46,7 @@ export default class ProcessComponent extends React.Component {
     _refresh() {
         const { navigator } = this.props;
         if (navigator) {
-            navigator.pop();
-            console.log('pop');
+            console.log(navigator.getCurrentRoutes());
         }
     }
 

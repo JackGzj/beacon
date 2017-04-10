@@ -20,7 +20,8 @@ let StorageUtil = {
     },
 
     saveUserInfo(carid, token, callback) {
-        var data = [[Constants.CODE_STORAGE_CRADID, carid],[Constants.CODE_STORAGE_TOKEN, token]];
+        console.log('storage: ' + carid + ' , ' + token);
+        var data = [[Constants.CODE_STORAGE_CRADID, carid],[Constants.CODE_STORAGE_TOKEN, token],[Constants.CODE_STORAGE_NAME, '小瓜子']];
         try {
             AsyncStorage.multiSet(
                 data

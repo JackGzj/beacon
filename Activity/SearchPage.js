@@ -30,15 +30,21 @@ export default class SearchPage extends React.Component {
 
     _search() {
         // pop方法无法带参，需使用监听器传参
-        if (this.state.text != '') {
-            DeviceEventEmitter.emit('changeSearch',this.state.text);
-        }
+        DeviceEventEmitter.emit('changeSearch',this.state.text);
 
         const { navigator } = this.props;
         if (navigator) {
             navigator.pop();
-
         }
+    }
+
+    componentWillMount() {
+        if (this.props.text != 'undefined' && this.props.text != '') {
+            this.setState({text: this.props.text});
+        }
+        /*if (this.state.text == '') {
+            this.setState({text: '搜地点'});
+        }*/
     }
 
     render() {
@@ -51,7 +57,7 @@ export default class SearchPage extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.topMiddle}>
-                        <TextInput placeholder='搜地点' placeholderTextColor='#C2C2C2' style={styles.searchBox} onChangeText={(text) => this.setState({text: text})}/>
+                        <TextInput placeholder='搜地点' placeholderTextColor='#C2C2C2' style={styles.searchBox} onChangeText={(text) => this.setState({text: text})} value={this.state.text}/>
                     </View>
                     <TouchableOpacity onPress={this._search.bind(this)}>
                         <View style={styles.topRight}>
@@ -156,6 +162,7 @@ const styles = StyleSheet.create({
         paddingRight: 12,
         paddingTop: 3,
         paddingBottom: 3,
+        height: 21,
     },
     facilityText: {
         fontSize: 15,

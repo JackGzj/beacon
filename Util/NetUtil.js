@@ -198,6 +198,7 @@ let NetUtil = {
         return jsonArray;
     },
 
+    // 获取用户所有就诊卡
     getMedicalCard(callback) {
         Storage.getUserInfo((data) => {
             var fetchOptions = {
@@ -235,6 +236,7 @@ let NetUtil = {
         });
     },
 
+    // 获取用户历史就诊记录
     getVisitRecord(callback) {
         Storage.getUserInfo((data) => {
             var fetchOptions = {

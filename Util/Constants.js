@@ -8,6 +8,7 @@ let Constants = {
     CODE_UPDATE_SUCCESS : '40000',
     CODE_STORAGE_CRADID : 'carid',
     CODE_STORAGE_TOKEN : 'token',
+    CODE_STORAGE_NAME : 'name',
 }
 
 export default Constants

@@ -61,6 +61,7 @@ export default class Cell extends React.Component {
         // 其它就诊环节
         else {
             let details = [];
+            // 只有一个就诊细节
             if (this.props.data.details == null || this.props.data.details == 'undefined') {
                 // 是否需要渲染右侧小图标
                 if (this.props.data.protstate == 1 && this.props.data.prodstate == 0) {
@@ -77,12 +78,12 @@ export default class Cell extends React.Component {
                     <TouchableOpacity onPress={this._jumpToMap.bind(this, this.props.data.prodetailname)} key={0}>
                         <View style={styles.detailContainer}>
                             <View style={styles.detailLeft}>
-                                <Text style={this.props.data.protstate == 1 ? (this.props.data.prodstate == 1 ? styles.text_past : styles.text_now) : (this.props.data.prodstate == 0 ? styles.text_future : styles.text_past)}>{this.props.data.prodetailname}</Text>
+                                <Text style={this.props.data.protstate == 1 ? (this.props.data.prodstate == 1 ? styles.text_past : styles.text_now) : (this.props.data.protstate == 0 ? styles.text_future : styles.text_past)}>{this.props.data.prodetailname}</Text>
                             </View>
                             <View style={styles.detailRight}>
                                 <View style={styles.detailTextRow}>
-                                    <Image source={this.props.data.prodstate == 0 ? require('../images/place.png') : require('../images/place_g.png')} style={styles.detailTextIcon}/>
-                                    <Text style={this.props.data.protstate == 1 ? (this.props.data.prodstate == 1 ? styles.text_past : styles.text_now) : styles.text_past}>{this.props.data.prodetailloc}</Text>
+                                    <Image source={(this.props.data.protstate == 1) ? ((this.props.data.prodstate == 0) ? require('../images/place.png') : require('../images/place_g.png')) : require('../images/place_g.png')} style={styles.detailTextIcon}/>
+                                    <Text style={(this.props.data.protstate == 1) ? (this.props.data.prodstate == 1 ? styles.text_past : styles.text_now) : styles.text_past}>{this.props.data.prodetailloc}</Text>
                                 </View>
                             </View>
                             {icon}
@@ -108,18 +109,19 @@ export default class Cell extends React.Component {
                         <TouchableOpacity onPress={this._jumpToMap.bind(this, detailsData[i].prodetailname)} key={i}>
                             <View style={styles.detailContainer}>
                                 <View style={styles.detailLeft}>
-                                    <Text style={this.props.data.protstate == 1 ? (this.props.data.prodstate == 1 ? styles.text_past : styles.text_now) : (this.props.data.prodstate == 0 ? styles.text_future : styles.text_past)}>{detailsData[i].prodetailname}</Text>
+                                    <Text style={this.props.data.protstate == 1 ? (detailsData[i].prodstate == 1 ? styles.text_past : styles.text_now) : (this.props.data.protstate == 0 ? styles.text_future : styles.text_past)}>{detailsData[i].prodetailname}</Text>
                                 </View>
                                 <View style={styles.detailRight}>
                                     <View style={styles.detailTextRow}>
-                                        <Image source={this.props.data.prodstate == 0 ? require('../images/place.png') : require('../images/place_g.png')} style={styles.detailTextIcon}/>
-                                        <Text style={this.props.data.protstate == 1 ? (this.props.data.prodstate == 1 ? styles.text_past : styles.text_now) : styles.text_past}>{detailsData[i].prodetailloc}</Text>
+                                        <Image source={(this.props.data.protstate == 1) ? (detailsData[i].prodstate == 0 ? require('../images/place.png') : require('../images/place_g.png')) : require('../images/place_g.png')} style={styles.detailTextIcon}/>
+                                        <Text style={this.props.data.protstate == 1 ? (detailsData[i].prodstate == 1 ? styles.text_past : styles.text_now) : styles.text_past}>{detailsData[i].prodetailloc}</Text>
                                     </View>
                                 </View>
                                 {icon}
                             </View>
                         </TouchableOpacity>
                     )
+                    // 多个细节，渲染分割线
                     if (i < detailsData.length - 1) {
                         details.push(
                             <View style={styles.separator} key={i + 100}></View>
@@ -148,7 +150,7 @@ export default class Cell extends React.Component {
     // 渲染逻辑：1、是否当前环节；2、是否属于同一环节；3、有没有细节（与2貌似冲突）
 }
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
     rowContainer: {
         width: '100%',
         flexDirection: 'row',

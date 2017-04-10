@@ -1,7 +1,7 @@
 /**
  * Created by Jack on 2017/3/13.
  */
-import React, { Component } from 'react';
+import React from 'react';
 import {
     StyleSheet,
     Text,
@@ -18,6 +18,7 @@ export default class LoginSuccess extends React.Component {
         super();
         this.state = {
             selectedTab: '就诊流程',
+            detail: '',
         };
     }
 
@@ -27,6 +28,7 @@ export default class LoginSuccess extends React.Component {
         };
         if (this.props.detail != 'undefined' && this.props.detail != null) {
             console.log('detail: ' + this.props.detail);
+            this.setState({detail: this.props.detail});
         };
     }
 
@@ -56,7 +58,7 @@ export default class LoginSuccess extends React.Component {
                         renderIcon={() => <Image style={styles.icon} source={require("../images/map_normal.png")} />}
                         renderSelectedIcon={() => <Image style={styles.icon} source={require("../images/map_press.png")} />}
                         onPress={() => this.setState({ selectedTab: '地图' })}>
-                        <MapComponent navigator={this.props.navigator}/>
+                        <MapComponent navigator={this.props.navigator} detail={this.state.detail}/>
                     </TabNavigator.Item>
                     <TabNavigator.Item
                         selected={this.state.selectedTab === '我的'}
