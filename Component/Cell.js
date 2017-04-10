@@ -8,6 +8,7 @@ import {
     StyleSheet,
     Image,
     TouchableOpacity,
+    DeviceEventEmitter,
 } from 'react-native';
 import LoginSuccess from '../Activity/LoginSuccess'
 
@@ -18,7 +19,7 @@ export default class Cell extends React.Component {
     }
 
     _jumpToMap(detail) {
-        const { navigator } = this.props;
+        /*const { navigator } = this.props;
         if (navigator) {
             navigator.replace({
                 name : 'LoginSuccess',
@@ -28,7 +29,8 @@ export default class Cell extends React.Component {
                     detail: detail,
                 }
             });
-        }
+        }*/
+        DeviceEventEmitter.emit('jumpToMap', detail);
     }
 
     _getPicURI(tache, state) {

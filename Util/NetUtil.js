@@ -8,6 +8,7 @@ let medicalCardURL = "http://120.77.176.18/jztsgz/user/getMedicalCard";
 let visitRecordURL = "http://120.77.176.18/jztsgz/user/getVisitRecord";
 let messageStateURL = "http://120.77.176.18/jztsgz/user/getMessageState";
 let setMessageURL = "http://120.77.176.18/jztsgz/user/setMessageState";
+let searchURL = "http://120.77.176.18/jztsgz/user/searchLocation";
 
 import Constants from './Constants'
 import Storage from './StorageUtil'
@@ -274,6 +275,7 @@ let NetUtil = {
         });
     },
 
+    // 获取用户短信推送开关状态
     getMessageState(callback) {
         Storage.getUserInfo((data) => {
             var fetchOptions = {
@@ -310,6 +312,8 @@ let NetUtil = {
             });
         });
     },
+
+    // 设置用户短信推送开关
     setMessageState(data, callback){
         Storage.getUserInfo((result) => {
             var fetchOptions = {
@@ -351,5 +355,43 @@ let NetUtil = {
             });
         });
     },
+
+	// 搜索地点
+	getSearchLocation(data, callback) {
+		Storage.getUserInfo((result) => {
+			var fetchOptions = {
+				method: 'POST',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json',
+					'token': result.token,
+					'cardid': result.cardid,
+				},
+				body: JSON.stringify({data}),
+			};
+
+			var returnData = {
+				success: false,
+				data: '',
+				msg: '',
+			};
+			fetch(searchURL, fetchOptions)
+				.then((response) => response.json())
+				.then((responseData) => {
+					if (responseData.code == Constants.CODE_GERDATA_SUCCESS) {
+						returnData.success = true;
+						returnData.data = responseData.data;
+					}
+					else {
+						returnData.msg = responseData.msg;
+					}
+					callback(returnData);
+				}).catch((error) => {
+				console.error(error);
+				returnData.msg = '服务器打瞌睡啦~';
+				callback(returnData);
+			});
+		});
+	},
 }
 export default NetUtil

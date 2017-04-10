@@ -3,8 +3,8 @@
  */
 import React from 'react';
 import {
+    DeviceEventEmitter,
     StyleSheet,
-    Text,
     View,
     Image,
 } from 'react-native';
@@ -22,7 +22,7 @@ export default class LoginSuccess extends React.Component {
         };
     }
 
-    componentWillMount() {
+    /*componentWillMount() {
         if (this.props.tab != 'undefined' && this.props.tab != null) {
             this.setState({selectedTab: this.props.tab})
         };
@@ -30,10 +30,19 @@ export default class LoginSuccess extends React.Component {
             console.log('detail: ' + this.props.detail);
             this.setState({detail: this.props.detail});
         };
+    }*/
+
+    componentDidMount() {
+		this.subscription = DeviceEventEmitter.addListener('jumpToMap', this._jumpToMap.bind(this));
     }
 
     componentWillUnmount() {
         console.log('LoginSuccess Unmount!');
+        this.subscription.remove();
+    }
+
+    _jumpToMap(data) {
+        this.setState({selectedTab: '地图'});
     }
 
     render() {

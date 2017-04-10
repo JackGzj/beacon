@@ -14,6 +14,7 @@ import {
 import Beacons from 'react-native-beacons-manager'
 import BluetoothState from 'react-native-bluetooth-state';
 import SearchPage from './SearchPage'
+import NetUtil from '../Util/NetUtil'
 
 let url = 'http://xiaoguazi.net.cn/jztsgz/views/phone/map.jsp';
 const region = {
@@ -40,6 +41,7 @@ export default class MapComponent extends React.Component {
 
     componentDidMount() {
         this.subscription = DeviceEventEmitter.addListener('changeSearch',this._refreshSearchText.bind(this));
+        this.listener = DeviceEventEmitter.addListener('jumpToMap',this._getDetail.bind(this));
 
         BluetoothState.subscribe(
             bluetoothState => {
@@ -71,11 +73,6 @@ export default class MapComponent extends React.Component {
         this.subscription.remove();
         BluetoothState.subscribe.remove();
         console.log('Map Unmount!');
-    }
-
-    _refreshSearchText(data) {
-        // 请求数据
-        this.setState({text: data});
     }
 
     webview = null;
@@ -117,6 +114,7 @@ export default class MapComponent extends React.Component {
         return coord;
     };*/
 
+    // 跳转到搜索页面
     _jumpToSearch() {
         const { navigator } = this.props;
         if (navigator) {
@@ -130,8 +128,32 @@ export default class MapComponent extends React.Component {
         }
     }
 
+	// 收到细节页面发来的搜索数据
+	_refreshSearchText(data) {
+        if (data != '') {
+			this.setState({text: data});
+			this._search(data);
+        }
+	}
 
+    // 获取到流程页面发送过来的就诊细节名
+    _getDetail(data) {
+		if (data != '') {
+			this.setState({text: data});
+			this._search(data);
+		}
+    }
 
+    _search(data) {
+		var datas = {search:data};
+		NetUtil.getSearchLocation(datas, (result) => {
+			if (result.success == true) {
+				console.log('search result: ' + result.data);
+			}
+		});
+    }
+
+    // 监听iBeacon
     _getLocation() {
         if (this.state.bluetoothState == '' || this.state.bluetoothState == 'off') {
             alert('定位需要打开手机蓝牙哟~');
