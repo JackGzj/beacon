@@ -3,13 +3,13 @@
  */
 import React, { Component } from 'react';
 import {
-    AppRegistry,
+    KeyboardAvoidingView,
+    ScrollView,
     StyleSheet,
     Text,
     View,
     Image,
     TextInput,
-    TouchableOpacity,
     Alert,
 } from 'react-native';
 
@@ -23,7 +23,7 @@ export default class LoginActivity extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            cardid : 'GZJ123456789',
+            cardid : 'YZQ123456789',
             password : '123456',
         };
         // this.cardid = "";
@@ -39,13 +39,13 @@ export default class LoginActivity extends Component {
 
     render() {
         return (
-
             <View style={LoginStyles.loginView}>
                 <View   style={{marginTop: 70,justifyContent: 'center',alignItems: 'center',}}>
                     <Image source={require('../images/logo.png')} style={{width: 100,height: 116,resizeMode: Image.resizeMode.contain}}/>
-                    <Text style={{marginTop: 21, fontSize: 21, color:'#7E95C4'}}>Easy Doctor</Text>
+                    <Text style={{marginTop: 21, fontSize: 21, color:'#7E95C4'}}>易诊通</Text>
                     <Text style={{marginTop: 10, fontSize: 16, color:'#98B2E9'}}>轻松看病，看病轻松</Text>
                 </View>
+                <KeyboardAvoidingView behavior='padding'>
                 <View style={{marginTop: 20,padding : 45}}>
                     <View style={LoginStyles.TextInputView}>
                         <Image style={{flex: 1, height: 24, width: 24,resizeMode: Image.resizeMode.stretch}} source={require('../images/user.png')}/>
@@ -60,6 +60,7 @@ export default class LoginActivity extends Component {
                                    secureTextEntry={false}
                         />
                     </View>
+
                     <View style={LoginStyles.TextInputView}>
                         <Image style={{flex: 1, height: 24, width: 24,resizeMode: Image.resizeMode.stretch}} source={require('../images/psw.png')}/>
                         <TextInput style={LoginStyles.TextInput}
@@ -72,10 +73,11 @@ export default class LoginActivity extends Component {
                                    }
                                secureTextEntry={true}
                     />
-                </View>
+                    </View>
                     <LoginButton name='登 录' onPressCallback={this.onPressCallback} fontsize={20}/>
                     <Text style={{color:"#4A90E2",textAlign:'center',marginTop:10}} >忘记密码？</Text>
                 </View>
+                </KeyboardAvoidingView>
             </View>
         )
     }
@@ -101,7 +103,7 @@ export default class LoginActivity extends Component {
         NetUitl.postLogin(data, (responseText) => {
             if (responseText.success == true) {
                 // 存储用户信息
-                StorageUtil.saveUserInfo(this.state.cardid, responseText.token, (response) => {
+                StorageUtil.saveUserInfo(this.state.cardid, responseText.token, responseText.name, (response) => {
                     if (response == true) {
                         this.onLoginSuccess();
                     }

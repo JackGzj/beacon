@@ -4,6 +4,7 @@
 import { AsyncStorage } from 'react-native';
 import Constants from './Constants'
 let StorageUtil = {
+    // 存储一个键值对
     saveItem(key, vaule, callback) {
         try {
             AsyncStorage.setItem(
@@ -19,9 +20,10 @@ let StorageUtil = {
         }
     },
 
-    saveUserInfo(carid, token, callback) {
-        console.log('storage: ' + carid + ' , ' + token);
-        var data = [[Constants.CODE_STORAGE_CRADID, carid],[Constants.CODE_STORAGE_TOKEN, token],[Constants.CODE_STORAGE_NAME, '小瓜子']];
+    // 存储用户登录信息
+    saveUserInfo(carid, token, name, callback) {
+        // console.log('storage: ' + carid + ' , ' + token);
+        var data = [[Constants.CODE_STORAGE_CRADID, carid],[Constants.CODE_STORAGE_TOKEN, token],[Constants.CODE_STORAGE_NAME, name]];
         try {
             AsyncStorage.multiSet(
                 data
@@ -36,6 +38,7 @@ let StorageUtil = {
         }
     },
 
+    // 根据key获取value
     getItem(key, callback) {
         AsyncStorage.getItem(key)
             .then(  //使用Promise机制的方法
@@ -53,6 +56,7 @@ let StorageUtil = {
         });
     },
 
+    // 获取token和cradid
     getUserInfo(callback) {
         let data = {
             cardid : '',
@@ -65,6 +69,18 @@ let StorageUtil = {
                 callback(data);
             });
         });
+    },
+
+    removeLoginInfo(callback) {
+        try {
+            AsyncStorage.multiRemove([Constants.CODE_RIGHT_TOKEN, Constants.CODE_STORAGE_NAME, Constants.CODE_STORAGE_CRADID]).then(() => {
+			    console.log('用户信息清除成功');
+			    callback(true);
+		    });
+	    } catch (error) {
+		console.log('用户信息清除失败');
+		callback(false)
+	}
     }
 
 }

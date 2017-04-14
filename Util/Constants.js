@@ -9,6 +9,11 @@ let Constants = {
     CODE_STORAGE_CRADID : 'carid',
     CODE_STORAGE_TOKEN : 'token',
     CODE_STORAGE_NAME : 'name',
+
+    isMapLoaded : false,
+    tempDetail : '',
+
+    PROCESS_HINT : '就诊流程可能因医生操作而改变，请及时刷新（另：检查后的二次门诊无须再次排队）',
 }
 
 export default Constants

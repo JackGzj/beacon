@@ -11,7 +11,9 @@ import {
     TouchableOpacity,
     ActivityIndicator,
 } from 'react-native';
+import LoginActivity from './LoginActivity'
 import LoginButton from '../Component/LoginButton'
+import StorageUtil from '../Util/StorageUtil'
 import NetUtil from '../Util/NetUtil'
 
 export default class ConfigPage extends React.Component {
@@ -25,6 +27,23 @@ export default class ConfigPage extends React.Component {
         if (navigator) {
             navigator.pop();
         }
+    }
+
+    _exitLogin() {
+        StorageUtil.removeLoginInfo((result) => {
+            if (result) {
+				const { navigator } = this.props;
+				if (navigator) {
+					navigator.resetTo({
+                        name: 'LoginActivity',
+                        component: LoginActivity,
+                    });
+				}
+            }
+            else {
+                alert('清除登录信息失败！请重试');
+            }
+        })
     }
 
     componentWillMount() {
@@ -113,7 +132,7 @@ export default class ConfigPage extends React.Component {
                             </View>
                         </TouchableOpacity>
                         <View style={styles.buttonContainer}>
-                            <LoginButton name="退 出 登 录" fontsize={15}/>
+                            <LoginButton name="退 出 登 录" fontsize={15} onPressCallback={this._exitLogin.bind(this)}/>
                         </View>
                     </View>
                 );
@@ -175,7 +194,8 @@ var styles = StyleSheet.create({
     },
     backIcon: {
         marginLeft: 16,
-        height: 18,
+		height: 18,
+		width: 12,
     },
     title: {
         fontSize: 18,
@@ -210,7 +230,8 @@ var styles = StyleSheet.create({
     },
     rowIcon: {
         marginRight: 10,
-        height: 24,
+		width: 20,
+		height: 24,
     },
     switch: {
         marginRight: 10,

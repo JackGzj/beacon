@@ -15,9 +15,9 @@ import {
 
 import NodataPage from './NodataPage'
 import ErrorPage from './ErrorPage'
+import Constants from '../Util/Constants'
 import NetUtil from '../Util/NetUtil'
 import Cell from '../Component/Cell'
-import LoginSuccess from './LoginSuccess'
 
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
@@ -44,10 +44,14 @@ export default class ProcessComponent extends React.Component {
     }
 
     _refresh() {
-        const { navigator } = this.props;
-        if (navigator) {
-            console.log(navigator.getCurrentRoutes());
-        }
+		NetUtil.getProcess((result) => {
+			if (result.success) {
+				this.setState({dataSource: result.data, refreshing: false, error: false});
+			}
+			else {
+				this.setState({error: true});
+			}
+		});
     }
 
     _pullRefresh() {
@@ -67,18 +71,25 @@ export default class ProcessComponent extends React.Component {
     _renderRow(rowData, sectionID, rowID) {
         // console.log('rowData:' + JSON.stringify(rowData) + ',' + sectionID + ',' + rowID);
         return (
-            <Cell data={rowData} rowID={rowID} navigator={this.props.navigator}/>
+            <Cell data={rowData} rowID={rowID}/>
         );
     }
 
     _renderFooter() {
         return (
-            <View style={styles.rowContainer}>
-                <View style={styles.leftContainer}>
-                    <Image source={require('../images/end.png')} style={styles.tacheIcon}/>
+            <View style={{flex:1}}>
+                <View style={styles.rowContainer}>
+                    <View style={styles.leftContainer}>
+                        <Image source={require('../images/end.png')} style={styles.tacheIcon}/>
+                    </View>
+                    <View style={styles.listHeaderContainer}>
+                        <Text style={{color: '#8A8A8A',fontSize: 18}}>结束</Text>
+                    </View>
                 </View>
-                <View style={styles.listHeaderContainer}>
-                    <Text style={{color: '#8A8A8A',fontSize: 18}}>结束</Text>
+                <View style={styles.rowContainer}>
+                    <View style={styles.hintContainer}>
+                        <Text style={styles.hintText}>{Constants.PROCESS_HINT}</Text>
+                    </View>
                 </View>
             </View>
         );
@@ -92,7 +103,7 @@ export default class ProcessComponent extends React.Component {
             }
             else {
                 // 数据是否为空
-                if (this.state.dataSource == '' || this.state.dataSource.length == 0 || this.state.dataSource == null) {
+                if (this.state.dataSource === '' || this.state.dataSource.length === 0 || this.state.dataSource === null) {
                     return (
                         <NodataPage/>
                     );
@@ -119,13 +130,11 @@ export default class ProcessComponent extends React.Component {
             }
         } else {
             return (
-                <View style={{alignItems: 'center', justifyContent: 'center', flex: 1, backgroundColor: 'white'}}>
                 <ActivityIndicator animating={true}
                                    style={[styles.centering]}
                                    size="large"
                                    color="#cccccc"
                 />
-            </View>
             );
         }
     }
@@ -134,15 +143,15 @@ export default class ProcessComponent extends React.Component {
         return (
             <View style={styles.container}>
                 <View style={styles.topView}>
-                    <View style={{flex: 1}}>
-                        <TouchableOpacity onPress={this._refresh.bind(this)}>
-                            <Image source={require('../images/refresh.png')} style={styles.refreshBtn} />
-                        </TouchableOpacity>
-                    </View>
+                    <View style={{flex: 1}}/>
                     <View style={{flex: 1, justifyContent: 'center'}}>
                         <Text style={styles.title}>就诊流程</Text>
                     </View>
-                    <View style={{flex: 1}}></View>
+                    <View style={{flex: 1}}>
+                        <TouchableOpacity onPress={this._refresh.bind(this)}>
+                        <Image source={require('../images/refresh.png')} style={styles.refreshBtn} />
+                    </TouchableOpacity>
+                    </View>
                 </View>
                 {this._renderList()}
 
@@ -180,10 +189,10 @@ var styles = StyleSheet.create({
         alignSelf: 'center'
     },
     refreshBtn: {
-        marginLeft: 30,
+        marginRight: 30,
         width: 25,
         height: 25,
-        alignSelf: 'flex-start'
+        alignSelf: 'flex-end'
     },
     rowContainer: {
         width: '100%',
@@ -202,9 +211,23 @@ var styles = StyleSheet.create({
         alignItems : 'flex-start',
         paddingLeft: 22.5,
     },
+	hintContainer: {
+		flex: 63,
+		height: 25,
+		marginBottom: 30,
+		justifyContent: 'center',
+		alignItems : 'flex-start',
+		paddingRight: 15,
+        paddingLeft: 15,
+	},
     tacheIcon: {
         width: 35,
         height: 35,
         alignSelf: 'center'
     },
+    hintText: {
+        fontSize: 12,
+        color: '#A7A7A7',
+        lineHeight: 14,
+    }
 })

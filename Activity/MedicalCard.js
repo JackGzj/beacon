@@ -175,7 +175,8 @@ var styles = StyleSheet.create({
     },
     backIcon: {
         marginLeft: 16,
-        height: 18,
+		height: 18,
+		width: 12,
     },
     title: {
         fontSize: 18,
@@ -219,7 +220,7 @@ var styles = StyleSheet.create({
     },
     rowText: {
         marginLeft: 10,
-        fontSize: 18,
+        fontSize: 15,
         color: '#222222',
     },
     cardIcon: {

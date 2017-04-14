@@ -47,6 +47,15 @@ export default class SearchPage extends React.Component {
         }*/
     }
 
+    _setText(data) {
+		DeviceEventEmitter.emit('changeSearch',data);
+
+		const { navigator } = this.props;
+		if (navigator) {
+			navigator.pop();
+		}
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -69,14 +78,19 @@ export default class SearchPage extends React.Component {
                     <View style={styles.facilityContainer}>
                         <Text style={styles.bottomText}>便民设施</Text>
                         <View style={styles.facilityItems}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={this._setText.bind(this, '洗手间')}>
                                 <View style={styles.facilityItem}>
                                     <Text style={styles.facilityText}>洗手间</Text>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={this._setText.bind(this, 'ATM')}>
                                 <View style={styles.facilityItem}>
                                     <Text style={styles.facilityText}>ATM取款机</Text>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={this._setText.bind(this, '导诊台')}>
+                                <View style={styles.facilityItem}>
+                                    <Text style={styles.facilityText}>导诊台</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -149,7 +163,8 @@ const styles = StyleSheet.create({
         marginBottom: 50,
         width: '100%',
         height: 27,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        padding: 6,
     },
     facilityItem: {
         borderRadius: 8,
@@ -160,9 +175,9 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         paddingLeft: 12,
         paddingRight: 12,
-        paddingTop: 3,
-        paddingBottom: 3,
-        height: 21,
+        paddingTop: 6,
+        paddingBottom: 6,
+        height: 27,
     },
     facilityText: {
         fontSize: 15,

@@ -173,6 +173,7 @@ var styles = StyleSheet.create({
     backIcon: {
         marginLeft: 16,
         height: 18,
+        width: 12,
     },
     title: {
         fontSize: 18,
@@ -212,11 +213,12 @@ var styles = StyleSheet.create({
     },
     rowIcon: {
         marginRight: 10,
-        height: 24,
+		height: 24,
+		width: 16,
     },
     rowText: {
         marginLeft: 10,
-        fontSize: 18,
+        fontSize: 15,
         color: '#222222',
     },
     recordIcon: {

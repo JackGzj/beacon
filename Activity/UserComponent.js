@@ -13,8 +13,23 @@ import {
 import SettingPage from './SettingPage'
 import VisitRecord from './VisitRecord'
 import MedicalCard from './MedicalCard'
+import StorageUtil from '../Util/StorageUtil'
 
 export default class UserComponent extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            name: '',
+        }
+    }
+
+    componentWillMount() {
+        StorageUtil.getItem('name', (value) => {
+            if (value != 'error') {
+                this.setState({name: value});
+            }
+        })
+    }
 
     _jumpToSetting() {
         // 耗时较长的任务，防止卡顿，掉帧
@@ -62,7 +77,7 @@ export default class UserComponent extends React.Component {
                     <View style={styles.topLeft}></View>
                     <View style={styles.topMiddle}>
                         <Image source={require('../images/center.png')} style={styles.centerIcon}/>
-                        <Text style={styles.userName}>Jennie</Text>
+                        <Text style={styles.userName}>{this.state.name == '' ? 'Jennie' : this.state.name}</Text>
                     </View>
                     <View style={styles.topRigth}>
                         <TouchableOpacity onPress={this._jumpToSetting.bind(this)}>
@@ -106,7 +121,7 @@ var styles = StyleSheet.create ({
         alignItems: 'center',
     },
     topContainer: {
-        flex: 1,
+        flex: 2,
         width: '100%',
         backgroundColor: '#3FBCEF',
         flexDirection: 'row',
@@ -142,7 +157,7 @@ var styles = StyleSheet.create ({
         resizeMode: 'stretch',
     },
     bottomContainer: {
-        flex: 1,
+        flex: 3,
         width: '100%',
     },
     rowContainer: {
@@ -171,6 +186,7 @@ var styles = StyleSheet.create ({
     rowIcon: {
         marginRight: 10,
         height: 24,
+        width: 16,
     }
 })
 
